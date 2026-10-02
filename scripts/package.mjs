@@ -1,0 +1,40 @@
+import { spawnSync } from 'node:child_process';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { createHash } from 'node:crypto';
+import { createVSIX } from '@vscode/vsce';
+import { run_dotnet } from './dotnet.mjs';
+const runtime = process.env.CODEX_STATUS_RUNTIME || 'win-x64';
+if (!['win-x64', 'win-arm64'].includes(runtime)) throw new Error('Unsupported runtime');
+const compile = spawnSync(process.execPath, ['node_modules/typescript/bin/tsc', '-p', 'extension'], { stdio: 'inherit' });
+if (compile.status !== 0) throw new Error('TypeScript build failed');
+await import('./bundle.mjs');
+await fs.mkdir('dist', { recursive: true });
+run_dotnet(['publish', 'tray/src/CodexStatusTray.csproj', '-c', 'Release', '-r', runtime, '--self-contained', 'true', '-o', path.resolve('extension/bin', runtime), '-p:DebugType=None', '-p:DebugSymbols=false']);
+for (const name of ['README.md', 'README.fr.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md', 'CHANGELOG.md']) await fs.copyFile(name, path.join('extension', name));
+await fs.copyFile('LICENSE', 'remote-extension/LICENSE');
+await fs.writeFile('remote-extension/README.md', '# Codex Status Icons — Remote Bridge\n\nEnglish: Workspace component bundled with Codex Status Icons. Collects technical session events and account limits on the SSH host through the existing VS Code connection. No conversations are started or transferred. Installed automatically by the main Windows extension.\n\nFrançais : Composant workspace inclus dans Codex Status Icons. Collecte les événements techniques de session et les limites du compte sur l’hôte SSH via la connexion VS Code existante. Aucune conversation lancée ou transférée. Installation automatique par l’extension Windows principale.\n');
+await fs.mkdir('extension/remote', { recursive: true });
+const package_cwd = process.cwd();
+process.chdir(path.resolve('remote-extension'));
+try { await createVSIX({ cwd: process.cwd(), packagePath: path.resolve(package_cwd, 'extension/remote/codex-status-remote.vsix'), dependencies: false, allowMissingRepository: true, rewriteRelativeLinks: false }); }
+finally { process.chdir(package_cwd); }
+const remote_manifest = JSON.parse(await fs.readFile('remote-extension/package.json', 'utf8'));
+await fs.copyFile('extension/remote/codex-status-remote.vsix', `dist/codex-status-remote-${remote_manifest.version}.vsix`);
+const docs_target = path.resolve('extension/docs');
+if (path.dirname(docs_target) !== path.resolve('extension')) throw new Error('Invalid generated docs target');
+await fs.rm(docs_target, { recursive: true, force: true });
+await fs.cp('docs', docs_target, { recursive: true });
+await fs.mkdir('extension/icons', { recursive: true });
+await fs.copyFile('icons/styles-preview.png', 'extension/icons/styles-preview.png');
+await fs.copyFile('icons/sizes-preview.png', 'extension/icons/sizes-preview.png');
+const manifest = JSON.parse(await fs.readFile('extension/package.json', 'utf8'));
+const package_path = path.resolve(`dist/codex-status-${manifest.version}.vsix`);
+await createVSIX({ cwd: path.resolve('extension'), packagePath: package_path, dependencies: false, allowMissingRepository: true, skipLicense: false, rewriteRelativeLinks: false });
+console.log(`VSIX: ${package_path}`);
+const assets = [path.basename(package_path), `codex-status-remote-${remote_manifest.version}.vsix`];
+const sums = await Promise.all(assets.map(async name => {
+  const bytes = await fs.readFile(path.join('dist', name));
+  return `${createHash('sha256').update(bytes).digest('hex')}  ${name}`;
+}));
+await fs.writeFile('dist/SHA256SUMS.txt', sums.join('\n') + '\n');

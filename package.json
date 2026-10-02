@@ -1,0 +1,27 @@
+{
+  "name": "codex-status-build",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:extension": "tsc -p extension && node scripts/bundle.mjs",
+    "build:tray": "node scripts/dotnet.mjs build tray/src/CodexStatusTray.csproj -c Release",
+    "lint": "eslint extension/src extension/tests && prettier --check extension/src extension/tests",
+    "format": "prettier --write extension/src extension/tests",
+    "test": "node scripts/test.mjs",
+    "test:extension": "tsc -p extension && node --test extension/out/tests/*.test.js",
+    "test:tray": "node scripts/dotnet.mjs run --project tray/tests/CodexStatusTray.Tests.csproj -c Release",
+    "test:integration": "node scripts/integration.mjs",
+    "package": "node scripts/package.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/vscode": "^1.96.0",
+    "@vscode/vsce": "^3.6.0",
+    "esbuild": "^0.25.0",
+    "eslint": "^9.0.0",
+    "prettier": "^3.6.0",
+    "typescript": "^5.9.0",
+    "typescript-eslint": "^8.0.0"
+  }
+}

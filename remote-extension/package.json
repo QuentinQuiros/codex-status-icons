@@ -1,0 +1,38 @@
+{
+  "name": "codex-status-remote",
+  "displayName": "Codex Status Icons — Remote Bridge",
+  "version": "1.0.0",
+  "publisher": "local-codex-tools",
+  "description": "%description%",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/remote.js",
+  "api": "none",
+  "activationEvents": [
+    "onCommand:_codex_status_remote.snapshot"
+  ],
+  "extensionKind": [
+    "workspace"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false
+    },
+    "virtualWorkspaces": {
+      "supported": false
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/QuentinQuiros/codex-status-icons.git"
+  },
+  "homepage": "https://github.com/QuentinQuiros/codex-status-icons#readme",
+  "bugs": {
+    "url": "https://github.com/QuentinQuiros/codex-status-icons/issues"
+  }
+}

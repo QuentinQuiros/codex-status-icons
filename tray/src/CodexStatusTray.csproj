@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType><TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors><AnalysisLevel>latest</AnalysisLevel>
+    <AssemblyName>codex_status_tray</AssemblyName><RootNamespace>CodexStatusTray</RootNamespace>
+    <Version>1.0.0</Version><ApplicationManifest>app.manifest</ApplicationManifest>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <AssemblyTitle>Codex Status Icons</AssemblyTitle><Product>Codex Status Icons</Product><Company>Quentin Quiros</Company>
+    <PublishSingleFile>true</PublishSingleFile><SelfContained Condition="'$(SelfContained)' == ''">false</SelfContained>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="../../extension/src/locales/*.json" LogicalName="CodexStatusTray.Locales.%(Filename).json" />
+    <EmbeddedResource Include="../assets/audio/codex-notification.wav" LogicalName="CodexStatusTray.Audio.ChatGPT.wav" />
+  </ItemGroup>
+</Project>

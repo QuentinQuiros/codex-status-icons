@@ -1,0 +1,9 @@
+src/**
+tests/**
+tsconfig.json
+out/src/**
+out/tests/**
+bin/**/*.pdb
+bin/**/*.xml
+**/*.map
+!remote/codex-status-remote.vsix

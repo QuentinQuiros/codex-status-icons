@@ -1,0 +1,167 @@
+{
+  "name": "codex-status",
+  "displayName": "Codex Status Icons",
+  "version": "1.0.0",
+  "codexStatusRemoteVersion": "1.0.0",
+  "publisher": "local-codex-tools",
+  "description": "%description%",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "extensionKind": [
+    "ui"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false
+    },
+    "virtualWorkspaces": {
+      "supported": false
+    }
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "codex_status.restart_tray",
+        "title": "%commands.restart%"
+      },
+      {
+        "command": "codex_status.diagnostics",
+        "title": "%commands.diagnostics%"
+      },
+      {
+        "command": "codex_status.pin_session",
+        "title": "%commands.pin%"
+      }
+    ],
+    "configuration": {
+      "title": "Codex Status Icons",
+      "properties": {
+        "codex_status.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.enabled%"
+        },
+        "codex_status.workspace_label": {
+          "type": "string",
+          "default": "",
+          "description": "%config.workspace_label%"
+        },
+        "codex_status.show_working_duration": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.show_working_duration%"
+        },
+        "codex_status.start_tray_automatically": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.start_tray_automatically%"
+        },
+        "codex_status.exit_when_no_windows": {
+          "type": "boolean",
+          "default": true,
+          "scope": "application",
+          "description": "%config.exit_when_no_windows%"
+        },
+        "codex_status.log_level": {
+          "type": "string",
+          "enum": [
+            "off",
+            "error",
+            "debug"
+          ],
+          "default": "off",
+          "description": "%config.log_level%",
+          "enumDescriptions": [
+            "%config.log.off%",
+            "%config.log.error%",
+            "%config.log.debug%"
+          ]
+        },
+        "codex_status.sessions_directory": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "restricted": true,
+          "description": "%config.sessions_directory%"
+        },
+        "codex_status.remote_sessions_directory": {
+          "type": "string",
+          "default": "",
+          "scope": "machine-overridable",
+          "restricted": true,
+          "description": "%config.remote_sessions_directory%"
+        },
+        "codex_status.stale_working_minutes": {
+          "type": "number",
+          "default": 60,
+          "minimum": 5,
+          "maximum": 1440,
+          "description": "%config.stale_working_minutes%"
+        },
+        "codex_status.language": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "fr",
+            "en"
+          ],
+          "default": "auto",
+          "scope": "application",
+          "enumDescriptions": [
+            "%config.language.auto%",
+            "%config.language.fr%",
+            "%config.language.en%"
+          ],
+          "description": "%config.language%"
+        },
+        "codex_status.notifications_enabled": {
+          "type": "boolean",
+          "default": true,
+          "scope": "application",
+          "description": "%config.notifications_enabled%"
+        },
+        "codex_status.notification_sound": {
+          "type": "string",
+          "enum": [
+            "chatgpt",
+            "windows",
+            "silent",
+            "custom"
+          ],
+          "default": "chatgpt",
+          "scope": "application",
+          "description": "%config.notification_sound%",
+          "enumDescriptions": [
+            "%config.sound.chatgpt%",
+            "%config.sound.windows%",
+            "%config.sound.silent%",
+            "%config.sound.custom%"
+          ]
+        },
+        "codex_status.notification_sound_file": {
+          "type": "string",
+          "default": "",
+          "scope": "application",
+          "description": "%config.notification_sound_file%"
+        }
+      }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/QuentinQuiros/codex-status-icons.git"
+  },
+  "homepage": "https://github.com/QuentinQuiros/codex-status-icons#readme",
+  "bugs": {
+    "url": "https://github.com/QuentinQuiros/codex-status-icons/issues"
+  }
+}
